@@ -1,2 +1,3 @@
 gamble_bot_env
 *.vscode
+.env
