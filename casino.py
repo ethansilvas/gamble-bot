@@ -11,7 +11,7 @@ class Gambling(commands.Cog):
 
     @commands.command()
     async def roll(self, ctx, *args):
-        """roll dice either between 0 and 100 or 0 and a specified range
+        """Roll dice either between 0 and 100 or 0 and a specified range
 
         TODO: for now this is coded to be open for more than just 0-100 and 0-n rolling but maybe more functionalities aren't needed
         """
@@ -32,7 +32,19 @@ class Gambling(commands.Cog):
             await ctx.send(f'{commandAuthor.mention} rolled: {random.randint(0, 100)}')
 
     @commands.command()
-    async def bet(self, ctx, *args):
-        """make bets with other users using the same concept of /roll"""
+    async def bet(self, ctx, *, args):
+        """Make bets with other users using the same concept of /roll"""
+
+        """
+        either do one full arg and split from there 
+            can't error handle
+        
+        """
         print(ctx.message.content)
         print(args)
+
+        argsSplit = args.split()
+        print(argsSplit)
+
+        #await ctx.send(f'{ctx.message.author} wants to bet {args[0]} against {}')
+
