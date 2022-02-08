@@ -1,6 +1,8 @@
 import random
 from discord.ext import commands
 
+import constants
+
 class Gambling(commands.Cog):
     def __init__(self, bot):
         self.bot = bot 
@@ -46,5 +48,18 @@ class Gambling(commands.Cog):
         argsSplit = args.split()
         print(argsSplit)
 
-        #await ctx.send(f'{ctx.message.author} wants to bet {args[0]} against {}')
+        if (len(argsSplit) <= 1):
+            await ctx.send(constants.MISSING_REQUIRED_ARGUMENT_ERROR)
+        else:
+            try: 
+                maxRoll = int(argsSplit[0])
+                argsSplit.pop(0)
+                print(argsSplit)
+
+                betParticipants = ' '.join(argsSplit)
+
+                await ctx.send(f'{ctx.message.author.mention} wants to bet ${maxRoll} against {betParticipants}')
+            except ValueError:
+                print('value error')
+
 

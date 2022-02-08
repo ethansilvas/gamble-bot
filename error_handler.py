@@ -1,5 +1,7 @@
 from discord.ext import commands
 
+import constants
+
 class ErrorHandler(commands.Cog):
     """Global error handling"""
 
@@ -9,6 +11,6 @@ class ErrorHandler(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f'You are missing a required argument in your command.')
+            await ctx.send(constants.MISSING_REQUIRED_ARGUMENT_ERROR)
         else: 
             print(ctx, error)
