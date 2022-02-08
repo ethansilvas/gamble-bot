@@ -1,9 +1,13 @@
 import random
-from discord.ext import tasks, commands
+from discord.ext import commands
 
 class Gambling(commands.Cog):
     def __init__(self, bot):
         self.bot = bot 
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        print(reaction, user)
 
     @commands.command()
     async def roll(self, ctx, *args):

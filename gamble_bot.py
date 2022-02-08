@@ -13,8 +13,4 @@ bot = commands.Bot(command_prefix='/')
 
 bot.add_cog(casino.Gambling(bot))
 
-@bot.event
-async def on_reaction_add(reaction, user):
-    print(reaction, user)
-
 bot.run(token)
