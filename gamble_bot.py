@@ -17,7 +17,11 @@ async def roll(ctx, *args):
 
     if (args):
         if (len(args) == 1):
-            await ctx.send(f'{commandAuthor.mention} rolled: {random.randint(0, int(args[0]))}')
+            try: 
+                maxRoll = int(args[0])
+                await ctx.send(f'{commandAuthor.mention} rolled: {random.randint(0, maxRoll)}')
+            except ValueError:
+                print('value error')
         else:
             await ctx.send(f'{commandAuthor.mention} /roll command either accepts no arguments or only the max, inclusive, range to roll. Ex: "/roll" or "/roll 1000"')
     else: 
