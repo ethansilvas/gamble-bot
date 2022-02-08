@@ -36,12 +36,6 @@ class Gambling(commands.Cog):
     @commands.command()
     async def bet(self, ctx, *, args):
         """Make bets with other users using the same concept of /roll"""
-
-        """
-        either do one full arg and split from there 
-            can't error handle
-        
-        """
         print(ctx.message.content)
         print(args)
 
