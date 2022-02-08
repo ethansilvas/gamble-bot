@@ -12,6 +12,10 @@ bot = commands.Bot(command_prefix='/')
 
 @bot.command()
 async def roll(ctx, *args):
+    """roll dice either between 0 and 100 or 0 and a specified range
+
+    TODO: for now this is coded to be open for more than just 0-100 and 0-n rolling but maybe more functionalities aren't needed
+    """
     print(ctx.message.content)
     commandAuthor = ctx.message.author
 
