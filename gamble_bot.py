@@ -24,6 +24,15 @@ async def roll(ctx, *args):
         print('no args')
         await ctx.send(f'{commandAuthor.mention} rolled: {random.randint(0, 100)}')
 
+@bot.command()
+async def bet(ctx, *args):
+    print(ctx.message.content)
+    print(args)
+
+@bot.event
+async def on_reaction_add(reaction, user):
+    print(reaction, user)
+
 bot.run(token)
 
 
