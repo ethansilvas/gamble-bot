@@ -1,3 +1,4 @@
-gamble_bot_env
 *.vscode
 .env
+__pycache__
+gamble_bot_env
