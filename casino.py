@@ -26,9 +26,9 @@ class Gambling(commands.Cog):
                     maxRoll = int(args[0])
                     await ctx.send(f'{commandAuthor.mention} rolled: {random.randint(0, maxRoll)}')
                 except ValueError:
-                    print('value error')
+                    await ctx.send(f'{commandAuthor.mention} {constants.ROLL_VALUE_ERROR}')
             else:
-                await ctx.send(f'{commandAuthor.mention} /roll command either accepts no arguments or only the max, inclusive, range to roll. Ex: "/roll" or "/roll 1000"')
+                await ctx.send(f'{commandAuthor.mention} {constants.ROLL_ARGUMENT_ERROR}')
         else: 
             print('no args')
             await ctx.send(f'{commandAuthor.mention} rolled: {random.randint(0, 100)}')
@@ -36,11 +36,8 @@ class Gambling(commands.Cog):
     @commands.command()
     async def bet(self, ctx, *, args):
         """Make bets with other users using the same concept of /roll"""
-        print(ctx.message.content)
-        print(args)
-
+        commandAuthor = ctx.message.author
         argsSplit = args.split()
-        print(argsSplit)
 
         if (len(argsSplit) <= 1):
             await ctx.send(constants.MISSING_REQUIRED_ARGUMENT_ERROR)
@@ -52,8 +49,8 @@ class Gambling(commands.Cog):
 
                 betParticipants = ' '.join(argsSplit)
 
-                await ctx.send(f'{ctx.message.author.mention} wants to bet ${maxRoll} against {betParticipants}')
+                await ctx.send(f'{commandAuthor.mention} wants to bet ${maxRoll} against {betParticipants}')
             except ValueError:
-                print('value error')
+                await ctx.send(f'{commandAuthor.mention} {constants.BET_VALUE_ERROR}')
 
 
