@@ -5,13 +5,29 @@ from discord.ext import commands
 import constants
 
 class Bank(commands.Cog):
-    def __init__(self, bot, records=None):
+    def __init__(self, bot):
         self.bot = bot
-        self.records = {}
+        self.records = self.load_records()
+        print(f'records: {self.records}')
 
     @commands.command()
     async def money(self, ctx):
         print(ctx.message.author)
+    
+    def load_records(self): 
+        try: 
+            records_file = open('records.json')
+            records = json.load(records_file)
+
+            print(records)
+            return records
+        except IOError:
+            print(constants.NO_RECORDS_FOUND)
+            open('records.json', 'w')
+            return {}
+        except json.JSONDecodeError:
+            print(constants.CREATED_EMPTY_RECORDS)
+            return {}
 
 
 class Gambling(commands.Cog):

@@ -1,3 +1,6 @@
+NO_RECORDS_FOUND = 'No existing records.json file found. A new file has been created.'
+CREATED_EMPTY_RECORDS = 'Existing "records.json" file is empty. Bank has been created with empty records.'
+
 MISSING_REQUIRED_ARGUMENT_ERROR = 'You are missing a required argument in your command.'
 
 ROLL_ARGUMENT_ERROR = '/roll command either accepts no arguments or only the max, inclusive, range to roll. Ex: "/roll" or "/roll 1000"'
