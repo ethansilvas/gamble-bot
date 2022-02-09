@@ -9,10 +9,29 @@ class Bank(commands.Cog):
         self.bot = bot
         self.records = self.load_records()
         print(f'records: {self.records}')
+        print(f'guilds: {bot.guilds}')
 
     @commands.command()
     async def money(self, ctx):
+        print(self.bot.guilds)
         print(ctx.message.author)
+
+    @commands.command()
+    async def initServerBank(self, ctx):
+        if ctx.message.author.name != 'eLou':
+            print(ctx.message.author.name)
+            print('not eLou')
+        else:
+            if len(self.records) == 0:
+                guild = ctx.message.guild.id
+                self.records[guild] = {}
+
+                print(ctx.message.guild.members)
+                for member in ctx.message.guild.members:
+                    print(member.name)
+
+                with open('records.json', 'w') as outfile:
+                    json.dump(self.records, outfile)
     
     def load_records(self): 
         try: 
@@ -39,7 +58,7 @@ class Gambling(commands.Cog):
         print(reaction, user)
         print(reaction.message.content)
 
-        if (reaction.message.author == self.bot.user):
+        if reaction.message.author == self.bot.user:
             print('wow this worked')
             print(reaction.message.reactions)
 
@@ -51,8 +70,8 @@ class Gambling(commands.Cog):
         """
         command_author = ctx.message.author
 
-        if (args):
-            if (len(args) == 1):
+        if args:
+            if len(args) == 1:
                 try: 
                     max_roll = int(args[0])
                     await ctx.send(f'{command_author.mention} rolled: {random.randint(0, max_roll)}')
@@ -70,7 +89,7 @@ class Gambling(commands.Cog):
         command_author = ctx.message.author
         args_split = args.split()
 
-        if (len(args_split) <= 1):
+        if len(args_split) <= 1:
             await ctx.send(constants.MISSING_REQUIRED_ARGUMENT_ERROR)
         else:
             try: 
