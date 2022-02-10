@@ -9,14 +9,15 @@ class Bank(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.records = self.__load_records()
-        print(f'records: {self.records}')
-        print(f'guilds: {bot.guilds}')
 
     @commands.command()
     async def money(self, ctx):
-        guild = str(ctx.message.guild.id)
-        messageAuthor = ctx.message.author
-        await ctx.send(f'{messageAuthor.mention}, you have ${self.records[guild][messageAuthor.name]}')
+        if len(self.records) != 0:
+            guild = str(ctx.message.guild.id)
+            messageAuthor = ctx.message.author
+            await ctx.send(f'{messageAuthor.mention}, you have ${self.records[guild][messageAuthor.name]}')
+        else: 
+            await ctx.send(constants.NO_MONEY_IN_BANK)
 
     @commands.command()
     async def initServerBank(self, ctx):
@@ -26,7 +27,7 @@ class Bank(commands.Cog):
             print('not eLou')
         else:
             if len(self.records) == 0:
-                guild = ctx.message.guild.id
+                guild = str(ctx.message.guild.id)
                 self.records[guild] = {}
 
                 for member in ctx.message.guild.members:

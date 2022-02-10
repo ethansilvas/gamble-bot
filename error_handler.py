@@ -4,7 +4,6 @@ import constants
 
 class ErrorHandler(commands.Cog):
     """Global error handling"""
-
     def __init__(self, bot):
         self.bot = bot
 
