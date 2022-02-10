@@ -1,3 +1,4 @@
+from email import message
 import random
 import json
 from discord.ext import commands
@@ -7,17 +8,19 @@ import constants
 class Bank(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.records = self.load_records()
+        self.records = self.__load_records()
         print(f'records: {self.records}')
         print(f'guilds: {bot.guilds}')
 
     @commands.command()
     async def money(self, ctx):
-        print(self.bot.guilds)
-        print(ctx.message.author)
+        guild = str(ctx.message.guild.id)
+        messageAuthor = ctx.message.author
+        await ctx.send(f'{messageAuthor.mention}, you have ${self.records[guild][messageAuthor.name]}')
 
     @commands.command()
     async def initServerBank(self, ctx):
+        """Initializes the server bank by adding a constant-defined amount to each non-bot member of the guild"""
         if ctx.message.author.name != 'eLou':
             print(ctx.message.author.name)
             print('not eLou')
@@ -26,19 +29,17 @@ class Bank(commands.Cog):
                 guild = ctx.message.guild.id
                 self.records[guild] = {}
 
-                print(ctx.message.guild.members)
                 for member in ctx.message.guild.members:
-                    print(member.name)
+                    if not member.bot:
+                        self.records[guild][member.name] = constants.INIT_MONEY_AMOUNT
 
                 with open('records.json', 'w') as outfile:
                     json.dump(self.records, outfile)
     
-    def load_records(self): 
+    def __load_records(self): 
         try: 
             records_file = open('records.json')
             records = json.load(records_file)
-
-            print(records)
             return records
         except IOError:
             print(constants.NO_RECORDS_FOUND)
