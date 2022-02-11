@@ -1,6 +1,6 @@
-from email import message
 import random
 import json
+
 from discord.ext import commands
 
 import constants
@@ -32,7 +32,9 @@ class Bank(commands.Cog):
 
                 for member in ctx.message.guild.members:
                     if not member.bot:
-                        self.records[guild][member.name] = constants.INIT_MONEY_AMOUNT
+                        self.records[guild][member.id] = {}
+                        self.records[guild][member.id]['name'] = member.name
+                        self.records[guild][member.id]['money'] = constants.INIT_MONEY_AMOUNT
 
                 with open('records.json', 'w') as outfile:
                     json.dump(self.records, outfile)
@@ -57,12 +59,12 @@ class Gambling(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        print(reaction, user)
-        print(reaction.message.content)
-
         if reaction.message.author == self.bot.user:
             print('wow this worked')
             print(reaction.message.reactions)
+            print(reaction, user)
+            print(reaction.message.content)
+
 
     @commands.command()
     async def roll(self, ctx, *args):
