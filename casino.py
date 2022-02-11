@@ -60,11 +60,27 @@ class Gambling(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         if reaction.message.author == self.bot.user:
-            print('wow this worked')
-            print(reaction.message.reactions)
-            print(reaction, user)
-            print(reaction.message.content)
+            # get the list of people who want are called out in bet
+            print(f'reaction mentions: {reaction.message.mentions}')
 
+            # compare to the current list of people who have responded to the message
+            print(f'reaction: {reaction.message.reactions}')
+            print(f'reaction and user: {reaction, user}')
+            print(f'content: {reaction.message.content}')
+
+            users = await reaction.users().flatten()
+            print(users, reaction)
+
+            if len(users) == len(reaction.message.mentions):
+                uniqueUsers = set()
+
+                for i in range(len(users)):
+                    uniqueUsers.add(users[i])
+                    uniqueUsers.add(reaction.message.mentions[i])
+
+                if (len(uniqueUsers) == len(users)):
+                    print('YOOOOOO')
+                    print(uniqueUsers)
 
     @commands.command()
     async def roll(self, ctx, *args):
