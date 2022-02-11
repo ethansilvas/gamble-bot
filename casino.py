@@ -60,48 +60,59 @@ class Gambling(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         if reaction.message.author == self.bot.user:
-            # get the list of people who want are called out in bet
-            print(f'reaction mentions: {reaction.message.mentions}')
-
-            # compare to the current list of people who have responded to the message
-            print(f'reaction: {reaction.message.reactions}')
-            print(f'reaction and user: {reaction, user}')
-            print(f'content: {reaction.message.content}')
-
             users = await reaction.users().flatten()
-            print(users, reaction)
+            mentions = reaction.message.mentions
 
-            if len(users) == len(reaction.message.mentions):
-                uniqueUsers = set()
+            if len(users) == len(mentions):
+                unique_users = set()
 
                 for i in range(len(users)):
-                    uniqueUsers.add(users[i])
-                    uniqueUsers.add(reaction.message.mentions[i])
+                    unique_users.add(users[i])
+                    unique_users.add(mentions[i])
 
-                if (len(uniqueUsers) == len(users)):
-                    print('YOOOOOO')
-                    print(uniqueUsers)
+                if (len(unique_users) == len(users)):
+                    highest_roll = None
+                    winner = None
+                    
+                    for user in unique_users:
+                        get_roll = self.__get_roll(user)
+
+                        if (highest_roll is None) or (highest_roll is not None and get_roll[0] > highest_roll):
+                            highest_roll = get_roll[0]
+                            winner = user
+
+                        await reaction.message.channel.send(get_roll[1])
+
+                    await reaction.message.channel.send(f'{winner.mention} wins with a roll of {highest_roll}!')
 
     @commands.command()
     async def roll(self, ctx, *args):
+        get_roll = self.__get_roll(ctx.message.author, args)
+        await ctx.send(get_roll[1])
+
+    def __get_roll(self, command_author, args=None):
         """Roll dice either between 0 and 100 or 0 and a specified range
 
         TODO: for now this is coded to be open for more than just 0-100 and 0-n rolling but maybe more functionalities aren't needed
         """
-        command_author = ctx.message.author
+        roll = None
+        message = ""
 
         if args:
             if len(args) == 1:
                 try: 
                     max_roll = int(args[0])
-                    await ctx.send(f'{command_author.mention} rolled: {random.randint(0, max_roll)}')
+                    roll = random.randint(0, max_roll)
+                    message = f'{command_author.mention} rolled: {roll}'
                 except ValueError:
-                    await ctx.send(f'{command_author.mention} {constants.ROLL_VALUE_ERROR}')
+                    message = f'{command_author.mention} {constants.ROLL_VALUE_ERROR}'
             else:
-                await ctx.send(f'{command_author.mention} {constants.ROLL_ARGUMENT_ERROR}')
+                message = f'{command_author.mention} {constants.ROLL_ARGUMENT_ERROR}'
         else: 
-            print('no args')
-            await ctx.send(f'{command_author.mention} rolled: {random.randint(0, 100)}')
+            roll = random.randint(0, 100)
+            message = f'{command_author.mention} rolled: {roll}'
+        
+        return [roll, message]
 
     @commands.command()
     async def bet(self, ctx, *, args):
@@ -115,8 +126,6 @@ class Gambling(commands.Cog):
             try: 
                 max_roll = int(args_split[0])
                 args_split.pop(0)
-                print(args_split)
-
                 bet_participants = ' '.join(args_split)
 
                 await ctx.send(f'{command_author.mention} wants to bet ${max_roll} against {bet_participants}')
