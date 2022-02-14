@@ -12,6 +12,9 @@ class Bank(commands.Cog):
 
     @commands.command()
     async def money(self, ctx):
+        self.__get_money(ctx)
+    
+    async def get_money(self, ctx):
         if len(self.records) != 0:
             guild = str(ctx.message.guild.id)
             messageAuthor = ctx.message.author
@@ -54,8 +57,9 @@ class Bank(commands.Cog):
 
 
 class Gambling(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot 
+    def __init__(self, bot, bank):
+        self.bot = bot
+        self.bank = bank
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
@@ -82,6 +86,8 @@ class Gambling(commands.Cog):
                             winner = user
 
                         await reaction.message.channel.send(get_roll[1])
+
+                    print(await self.bank.get_money(reaction))
 
                     await reaction.message.channel.send(f'{winner.mention} wins with a roll of {highest_roll}!')
 

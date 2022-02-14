@@ -15,9 +15,11 @@ intents.members = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
+bank = casino.Bank(bot)
+
 bot.add_cog(error_handler.ErrorHandler(bot))
-bot.add_cog(casino.Gambling(bot))
-bot.add_cog(casino.Bank(bot))
+bot.add_cog(bank)
+bot.add_cog(casino.Gambling(bot, bank))
 
 
 bot.run(token)
