@@ -4,7 +4,7 @@ MISSING_REQUIRED_ARGUMENT_ERROR = 'You are missing a required argument in your c
 # Bank 
 NO_RECORDS_FOUND = 'No existing records.json file found. A new file has been created.'
 CREATED_EMPTY_RECORDS = 'Existing "records.json" file is empty. Bank has been created with empty records.'
-NO_MONEY_IN_BANK = 'There is currently no money in the server bank. The GambleBot admin will need to initialize the bank for this server.'
+SERVER_BANK_NOT_INIT = 'There is currently no money in the server bank. The GambleBot admin will need to initialize the bank for this server.'
 
 INIT_MONEY_AMOUNT = 500
 

@@ -12,15 +12,15 @@ class Bank(commands.Cog):
 
     @commands.command()
     async def money(self, ctx):
-        self.__get_money(ctx)
+        await self.get_money(ctx)
     
     async def get_money(self, ctx):
         if len(self.records) != 0:
             guild = str(ctx.message.guild.id)
             messageAuthor = ctx.message.author
-            await ctx.send(f'{messageAuthor.mention}, you have ${self.records[guild][messageAuthor.name]}')
+            await ctx.send(f"{messageAuthor.mention}, you have ${self.records[guild][str(messageAuthor.id)]['money']}")
         else: 
-            await ctx.send(constants.NO_MONEY_IN_BANK)
+            await ctx.send(constants.SERVER_BANK_NOT_INIT)
 
     @commands.command()
     async def initServerBank(self, ctx):
@@ -35,9 +35,12 @@ class Bank(commands.Cog):
 
                 for member in ctx.message.guild.members:
                     if not member.bot:
-                        self.records[guild][member.id] = {}
-                        self.records[guild][member.id]['name'] = member.name
-                        self.records[guild][member.id]['money'] = constants.INIT_MONEY_AMOUNT
+                        # records will eventually be converted to a JSON which only allows string key/values
+                        member_id = str(member.id)
+
+                        self.records[guild][member_id] = {}
+                        self.records[guild][member_id]['name'] = member.name
+                        self.records[guild][member_id]['money'] = constants.INIT_MONEY_AMOUNT
 
                 with open('records.json', 'w') as outfile:
                     json.dump(self.records, outfile)
