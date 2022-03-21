@@ -57,6 +57,16 @@ class Bank(commands.Cog):
             await ctx.send(f"{messageAuthor.mention}, you have ${self.records[guild][str(messageAuthor.id)]['money']}")
         else: 
             await ctx.send(constants.SERVER_BANK_NOT_INIT)
+    
+    @commands.command()
+    async def leaderboard(self, ctx): 
+        if len(self.records) != 0:
+            guild = str(ctx.message.guild.id)
+            
+            for member in self.records[guild]: 
+                await ctx.send(f"{self.records[guild][member]['name']} has: ${self.records[guild][member]['money']}")
+        else: 
+            await ctx.send(constants.SERVER_BANK_NOT_INIT)
 
 class Gambling(commands.Cog):
     def __init__(self, bot, bank):
