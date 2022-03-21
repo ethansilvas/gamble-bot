@@ -9,19 +9,20 @@ class Bank(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.records = self.__load_records()
-
-    @commands.command()
-    async def money(self, ctx):
-        await self.get_money(ctx)
     
-    async def get_money(self, ctx):
-        if len(self.records) != 0:
-            guild = str(ctx.message.guild.id)
-            messageAuthor = ctx.message.author
-            await ctx.send(f"{messageAuthor.mention}, you have ${self.records[guild][str(messageAuthor.id)]['money']}")
-        else: 
-            await ctx.send(constants.SERVER_BANK_NOT_INIT)
-
+    def __load_records(self): 
+        try: 
+            records_file = open('records.json')
+            records = json.load(records_file)
+            return records
+        except IOError:
+            print(constants.NO_RECORDS_FOUND)
+            open('records.json', 'w')
+            return {}
+        except json.JSONDecodeError:
+            print(constants.CREATED_EMPTY_RECORDS)
+            return {}
+    
     @commands.command()
     async def initServerBank(self, ctx):
         """Initializes the server bank by adding a constant-defined amount to each non-bot member of the guild"""
@@ -44,20 +45,18 @@ class Bank(commands.Cog):
 
                 with open('records.json', 'w') as outfile:
                     json.dump(self.records, outfile)
-    
-    def __load_records(self): 
-        try: 
-            records_file = open('records.json')
-            records = json.load(records_file)
-            return records
-        except IOError:
-            print(constants.NO_RECORDS_FOUND)
-            open('records.json', 'w')
-            return {}
-        except json.JSONDecodeError:
-            print(constants.CREATED_EMPTY_RECORDS)
-            return {}
 
+    @commands.command()
+    async def money(self, ctx):
+        await self.get_money(ctx)
+    
+    async def get_money(self, ctx):
+        if len(self.records) != 0:
+            guild = str(ctx.message.guild.id)
+            messageAuthor = ctx.message.author
+            await ctx.send(f"{messageAuthor.mention}, you have ${self.records[guild][str(messageAuthor.id)]['money']}")
+        else: 
+            await ctx.send(constants.SERVER_BANK_NOT_INIT)
 
 class Gambling(commands.Cog):
     def __init__(self, bot, bank):
@@ -89,9 +88,7 @@ class Gambling(commands.Cog):
                             winner = user
 
                         await reaction.message.channel.send(get_roll[1])
-
-                    print(await self.bank.get_money(reaction))
-
+                    
                     await reaction.message.channel.send(f'{winner.mention} wins with a roll of {highest_roll}!')
 
     @commands.command()
