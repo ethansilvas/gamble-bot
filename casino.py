@@ -79,14 +79,17 @@ class Gambling(commands.Cog):
             users = await reaction.users().flatten()
             mentions = reaction.message.mentions
 
+            """TODO: need to add a check so that someone can't bet against only themselves"""
+
             if len(users) == len(mentions):
+                # users and mentions can list the users in different orders, so use a set to determine if the lists are identical
                 unique_users = set()
 
                 for i in range(len(users)):
                     unique_users.add(users[i])
                     unique_users.add(mentions[i])
 
-                if (len(unique_users) == len(users)):
+                if len(unique_users) == len(users):
                     highest_roll = None
                     winner = None
                     
@@ -100,6 +103,10 @@ class Gambling(commands.Cog):
                         await reaction.message.channel.send(get_roll[1])
                     
                     await reaction.message.channel.send(f'{winner.mention} wins with a roll of {highest_roll}!')
+
+                    for user in unique_users:
+                        print(user)
+                        print(user == winner)
 
     @commands.command()
     async def roll(self, ctx, *args):
