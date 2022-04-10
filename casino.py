@@ -10,7 +10,8 @@ class Bank(commands.Cog):
         self.bot = bot
         self.records = self.__load_records()
     
-    def __load_records(self): 
+    def __load_records(self):
+        """Initializes the local records.json file and is assigned to self.records"""
         try: 
             records_file = open('records.json')
             records = json.load(records_file)
@@ -60,6 +61,7 @@ class Bank(commands.Cog):
     
     @commands.command()
     async def leaderboard(self, ctx): 
+        """Prints out the current money of all members in the guild"""
         if len(self.records) != 0:
             guild = str(ctx.message.guild.id)
             
@@ -75,6 +77,7 @@ class Gambling(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
+        """Monitors reactions to see if a bet or other commands have the correct amount and people reacting to initiate it"""
         if reaction.message.author == self.bot.user:
             users = await reaction.users().flatten()
             mentions = reaction.message.mentions
@@ -93,6 +96,7 @@ class Gambling(commands.Cog):
                     highest_roll = None
                     winner = None
                     
+                    # print out all of the bet participant's rolls and print out the winner
                     for user in unique_users:
                         get_roll = self.__get_roll(user)
 
@@ -104,6 +108,7 @@ class Gambling(commands.Cog):
                     
                     await reaction.message.channel.send(f'{winner.mention} wins with a roll of {highest_roll}!')
 
+                    # adjust the money values of all the bet participants
                     for user in unique_users:
                         print(user)
                         print(user == winner)
