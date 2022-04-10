@@ -13,13 +13,12 @@ class Bank(commands.Cog):
     def __load_records(self):
         """Initializes the local records.json file and is assigned to self.records"""
         try: 
-            records_file = open('records.json')
-            records = json.load(records_file)
-            return records
+            with open('records.json') as records_file:
+                return json.load(records_file)
         except IOError:
             print(constants.NO_RECORDS_FOUND)
-            open('records.json', 'w')
-            return {}
+            with open('records.json', 'w') as f:
+                return {}
         except json.JSONDecodeError:
             print(constants.CREATED_EMPTY_RECORDS)
             return {}
