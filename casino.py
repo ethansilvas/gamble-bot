@@ -23,8 +23,8 @@ class Bank(commands.Cog):
             print(constants.CREATED_EMPTY_RECORDS)
             return {}
     
-    @commands.command()
-    async def initServerBank(self, ctx):
+    @commands.command(name='InitServerBank')
+    async def init_server_bank(self, ctx):
         """Initializes the server bank by adding a constant-defined amount to each non-bot member of the guild"""
         if ctx.message.author.name != 'eLou':
             print(ctx.message.author.name)
@@ -80,6 +80,8 @@ class Gambling(commands.Cog):
         if reaction.message.author == self.bot.user:
             users = await reaction.users().flatten()
             mentions = reaction.message.mentions
+
+            print(reaction.message.content)
 
             """TODO: need to add a check so that someone can't bet against only themselves"""
 
