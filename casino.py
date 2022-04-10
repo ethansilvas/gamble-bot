@@ -110,8 +110,19 @@ class Gambling(commands.Cog):
 
                     # adjust the money values of all the bet participants
                     for user in unique_users:
-                        print(user)
+                        print(user.id)
                         print(user == winner)
+
+                        guild = str(reaction.message.guild.id)
+                        print(self.bank.records[guild][str(user.id)])
+
+                        user_money = int(self.bank.records[guild][str(user.id)]['money'])
+
+                        if user == winner: 
+                            print(user_money)
+                            print(user_money - 300)
+                        else: 
+                            print('loser')
 
     @commands.command()
     async def roll(self, ctx, *args):
