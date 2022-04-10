@@ -76,7 +76,11 @@ class Gambling(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        """Monitors reactions to see if a bet or other commands have the correct amount and people reacting to initiate it"""
+        """Monitors reactions to see if a bet or other commands have the correct amount and people reacting to initiate it
+
+        TODO:  most likely want to move the /bet logic out of here and at least make it it's own method
+            could possibly use json to hold ongoing bets and check on_reaction_add to see if the message is from @GambleBot and if it is a bet...
+        """
         if reaction.message.author == self.bot.user:
             users = await reaction.users().flatten()
             mentions = reaction.message.mentions
