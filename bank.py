@@ -9,8 +9,10 @@ class Bank(commands.Cog):
         self.bot = bot
         self.records = self.__load_records()
     
+    """TODO: need to close files"""
+
     def __load_records(self):
-        """Initializes the local records.json file and is assigned to self.records"""
+        """Initializes the local records.json file"""
         try: 
             with open('records.json') as records_file:
                 return json.load(records_file)
@@ -21,6 +23,14 @@ class Bank(commands.Cog):
         except json.JSONDecodeError:
             print(constants.CREATED_EMPTY_RECORDS)
             return {}
+
+    def update_records(self): 
+        try:
+            with open('records.json', 'r+') as records_file:
+                records_file.write(json.dumps(self.records))
+                records_file.close()
+        except: 
+            print('Unable to update records.json')
     
     @commands.command(name='InitServerBank')
     async def init_server_bank(self, ctx):

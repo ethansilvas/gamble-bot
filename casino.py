@@ -59,10 +59,16 @@ class Gambling(commands.Cog):
                         user_money = int(self.bank.records[guild][str(user.id)]['money'])
 
                         if user == winner: 
+                            print(self.bank.records)
                             print(user_money)
                             print(user_money - 300)
+                            self.bank.records[guild][str(user.id)]['money'] += 300
+                            print(f"new money: ${self.bank.records}")
                         else: 
                             print('loser')
+
+                    # update records.json with updated records object
+                    self.bank.update_records()
 
     @commands.command()
     async def roll(self, ctx, *args):
