@@ -8,8 +8,6 @@ class Bank(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.records = self.__load_records()
-    
-    """TODO: need to close files"""
 
     def __load_records(self):
         """Initializes the local records.json file"""
@@ -29,7 +27,6 @@ class Bank(commands.Cog):
         try:
             with open('records.json', 'r+') as records_file:
                 records_file.write(json.dumps(self.records))
-                records_file.close()
         except: 
             print('Unable to update records.json')
     
