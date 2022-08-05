@@ -24,7 +24,8 @@ class Bank(commands.Cog):
             print(constants.CREATED_EMPTY_RECORDS)
             return {}
 
-    def update_records(self): 
+    def update_records(self):
+        """Updates the local records.json file with whatever the current records object value is"""
         try:
             with open('records.json', 'r+') as records_file:
                 records_file.write(json.dumps(self.records))
