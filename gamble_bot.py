@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 
 import casino, error_handler
+from bank import Bank
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
@@ -15,7 +16,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
-bank = casino.Bank(bot)
+bank = Bank(bot)
 
 bot.add_cog(error_handler.ErrorHandler(bot))
 bot.add_cog(bank)
