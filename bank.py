@@ -1,4 +1,5 @@
 import json
+from tokenize import String
 
 from discord.ext import commands
 
@@ -64,6 +65,11 @@ class Bank(commands.Cog):
             await ctx.send(f"{messageAuthor.mention}, you have ${self.records[guild][str(messageAuthor.id)]['money']}")
         else: 
             await ctx.send(constants.SERVER_BANK_NOT_INIT)
+    
+    def add_money(self, guild, user, amount):
+        """Adds to a given user's money"""
+        print('updating money')
+        self.records[guild][user]['money'] += amount
     
     @commands.command()
     async def leaderboard(self, ctx): 

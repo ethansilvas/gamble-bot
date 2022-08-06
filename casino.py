@@ -50,22 +50,14 @@ class Gambling(commands.Cog):
 
                     # adjust the money values of all the bet participants
                     for user in unique_users:
-                        print(user.id)
-                        print(user == winner)
-
                         guild = str(reaction.message.guild.id)
-                        print(self.bank.records[guild][str(user.id)])
 
-                        user_money = int(self.bank.records[guild][str(user.id)]['money'])
+                        bet_value = int(reaction.message.content.split('$')[1].split()[0])
 
                         if user == winner: 
-                            print(self.bank.records)
-                            print(user_money)
-                            print(user_money - 300)
-                            self.bank.records[guild][str(user.id)]['money'] += 300
-                            print(f"new money: ${self.bank.records}")
+                            self.bank.add_money(guild, str(user.id), bet_value)
                         else: 
-                            print('loser')
+                            self.bank.add_money(-bet_value)
 
                     # update records.json with updated records object
                     self.bank.update_records()
