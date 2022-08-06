@@ -57,7 +57,7 @@ class Gambling(commands.Cog):
                         if user == winner: 
                             self.bank.add_money(guild, str(user.id), bet_value)
                         else: 
-                            self.bank.add_money(-bet_value)
+                            self.bank.add_money(guild, str(user.id), -bet_value)
 
                     # update records.json with updated records object
                     self.bank.update_records()
