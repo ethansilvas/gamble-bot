@@ -103,8 +103,11 @@ class Gambling(commands.Cog):
             try: 
                 max_roll = int(args_split[0])
                 args_split.pop(0)
-                bet_participants = ' '.join(args_split)
-
-                await ctx.send(f'{command_author.mention} wants to bet ${max_roll} against {bet_participants}')
+                
+                if command_author.mention in args_split:
+                    await ctx.send(f'{command_author.mention} bet participants cannot contain your own username')
+                else: 
+                    bet_participants = ' '.join(args_split)
+                    await ctx.send(f'{command_author.mention} wants to bet ${max_roll} against {bet_participants}')
             except ValueError:
                 await ctx.send(f'{command_author.mention} {constants.BET_VALUE_ERROR}')
