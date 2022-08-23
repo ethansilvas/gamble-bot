@@ -101,8 +101,7 @@ class Gambling(commands.Cog):
             await ctx.send(constants.MISSING_REQUIRED_ARGUMENT_ERROR)
         else:
             try: 
-                max_roll = int(args_split[0])
-                args_split.pop(0)
+                max_roll = int(args_split.pop(0))
                 
                 if command_author.mention in args_split:
                     await ctx.send(f'{command_author.mention} bet participants cannot contain your own username')
