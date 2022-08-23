@@ -20,10 +20,6 @@ class Gambling(commands.Cog):
             users = await reaction.users().flatten()
             mentions = reaction.message.mentions
 
-            print(reaction.message.content)
-
-            """TODO: need to add a check so that someone can't bet against only themselves"""
-
             if len(users) == len(mentions):
                 # users and mentions can list the users in different orders, so use a set to determine if the lists are identical
                 unique_users = set()
